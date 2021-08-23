@@ -1,0 +1,335 @@
+
+rem bin2hex encoding
+set _0000=0
+set _0001=1
+set _0010=2
+set _0011=3
+set _0100=4
+set _0101=5
+set _0110=6
+set _0111=7
+set _1000=8
+set _1001=9
+set _1010=A
+set _1011=B
+set _1100=C
+set _1101=D
+set _1110=E
+set _1111=F
+rem hex2bin encoding
+set _0=0000
+set _1=0001
+set _2=0010
+set _3=0011
+set _4=0100
+set _5=0101
+set _6=0110
+set _7=0111
+set _8=1000
+set _9=1001
+set _A=1010
+set _B=1011
+set _C=1100
+set _D=1101
+set _E=1110
+set _F=1111
+rem alphanumeric2binary encoding
+set _0_=11011110
+set _1_=11001100
+set _2_=00010010
+set _3_=00001011
+set _4_=11000010
+set _5_=00010111
+set _6_=11010100
+set _7_=10000000
+set _8_=10000100
+set _9_=01001011
+set _A_=10000110
+set _B_=00010101
+set _C_=10100111
+set _D_=01011000
+set _E_=10000011
+set _F_=10100101
+set _G_=00011010
+set _H_=01101100
+set _I_=01010010
+set _J_=10010100
+set _K_=11101101
+set _L_=00001111
+set _M_=01111111
+set _N_=00000011
+set _O_=01000000
+set _P_=00001010
+set _Q_=11000111
+set _R_=10001100
+set _S_=01110101
+set _T_=00100111
+set _U_=01011011
+set _V_=00110011
+set _W_=10010011
+set _X_=01000001
+set _Y_=01101010
+set _Z_=00100101
+set ___=01000011
+set _._=01010011
+rem binary2alphanumeric encoding
+set _11011110_=0
+set _11001100_=1
+set _00010010_=2
+set _00001011_=3
+set _11000010_=4
+set _00010111_=5
+set _11010100_=6
+set _10000000_=7
+set _10000100_=8
+set _01001011_=9
+set _10000110_=A
+set _00010101_=B
+set _10100111_=C
+set _01011000_=D
+set _10000011_=E
+set _10100101_=F
+set _00011010_=G
+set _01101100_=H
+set _01010010_=I
+set _10010100_=J
+set _11101101_=K
+set _00001111_=L
+set _01111111_=M
+set _00000011_=N
+set _01000000_=O
+set _00001010_=P
+set _11000111_=Q
+set _10001100_=R
+set _01110101_=S
+set _00100111_=T
+set _01011011_=U
+set _00110011_=V
+set _10010011_=W
+set _01000001_=X
+set _01101010_=Y
+set _00100101_=Z
+set _01000011_=_
+set _01010011_=.
+rem hex2alphanumeric encoding
+set DE_=0
+set CC_=1
+set 12_=2
+set 0B_=3
+set C2_=4
+set 17_=5
+set D4_=6
+set 80_=7
+set 84_=8
+set 4B_=9
+set 86_=A
+set 15_=B
+set A7_=C
+set 58_=D
+set 83_=E
+set A5_=F
+set 1A_=G
+set 6C_=H
+set 52_=I
+set 94_=J
+set ED_=K
+set 0F_=L
+set 7F_=M
+set 03_=N
+set 40_=O
+set 0A_=P
+set C7_=Q
+set 8C_=R
+set 75_=S
+set 27_=T
+set 5B_=U
+set 33_=V
+set 93_=W
+set 41_=X
+set 6A_=Y
+set 25_=Z
+set 43_=_
+set 53_=.
+rem alphanumeric2hex encoding
+set 0_=DE
+set 1_=CC
+set 2_=12
+set 3_=0B
+set 4_=C2
+set 5_=17
+set 6_=D4
+set 7_=80
+set 8_=84
+set 9_=4B
+set A_=86
+set B_=15
+set C_=A7
+set D_=58
+set E_=83
+set F_=A5
+set G_=1A
+set H_=6C
+set I_=52
+set J_=94
+set K_=ED
+set L_=0F
+set M_=7F
+set N_=03
+set O_=40
+set P_=0A
+set Q_=C7
+set R_=8C
+set S_=75
+set T_=27
+set U_=5B
+set V_=33
+set W_=93
+set X_=41
+set Y_=6A
+set Z_=25
+set __=43
+set ._=53
+
+
+rem operates on a 93, 84, & 111-bit binary strings respectively.
+rem all regs starte at []reg0
+rem call :triviumcycle [0/1]
+rem 0=no output/1=output
+:triviumcycle
+	set /a aout=%areg:~92,1% ^^ %areg:~65,1% ^^ (%areg:~90,1% ^& %areg:~91,1%)
+	set /a bout=%breg:~83,1% ^^ %breg:~68,1% ^^ (%breg:~81,1% ^& %reg:~82,1%)
+	set /a cout=%creg:~110,1% ^^ %creg:~65,1% ^^ (%creg:~108,1% ^& %creg:~109,1%)
+	set /a ain=%cout% ^^ %areg:~68,1%
+	set /a bin=%aout% ^^ %breg:~77,1%
+	set /a cin=%bout% ^^ %creg:~86,1%
+	set areg=%ain%%areg:~0,92%
+	set breg=%bin%%breg:~0,83%
+	set creg=%cin%%creg:~0,110%
+	if %1==1 set /a kout=%aout% ^^ %bout% ^^ %cout%
+goto :eof
+
+:triviumiv
+	set ivblk=%time::=%
+	set ivblk=%ivblk:.=%
+	set ivblk0=%random%%random%%random%
+	set ivblk=%ivblk%%ivblk0:~0,2%
+	rem ivblk now contains the numeric IV
+	set biniv=!_%ivblk:~0,1%_!!_%ivblk:~1,1%_!!_%ivblk:~2,1%_!!_%ivblk:~3,1%_!!_%ivblk:~4,1%_!!_%ivblk:~5,1%_!!_%ivblk:~6,1%_!!_%ivblk:~7,1%_!!_%ivblk:~8,1%_!!_%ivblk:~9,1%_!
+	set "ivblk0="
+	set biniv=%biniv:~78,3%%biniv:~0,77%
+	set areg=%biniv%0000000000000
+goto :eof
+
+
+
+rem call :presentpbox [0/1]
+rem 0=enc/1=dec
+rem operates on a 64b binary string
+:presentpbox
+	if %1==0 (
+		set newstate=%state:~0,1%%state:~16,1%%state:~32,1%%state:~48,1%%state:~1,1%%state:~17,1%%state:~33,1%%state:~49,1%
+		set newstate=%newstate%%state:~2,1%%state:~18,1%%state:~34,1%%state:~50,1%%state:~3,1%%state:~19,1%%state:~35,1%%state:~51,1%
+		set newstate=%newstate%%state:~4,1%%state:~20,1%%state:~36,1%%state:~52,1%%state:~5,1%%state:~21,1%%state:~37,1%%state:~53,1%
+		set newstate=%newstate%%state:~6,1%%state:~22,1%%state:~38,1%%state:~54,1%%state:~7,1%%state:~23,1%%state:~39,1%%state:~55,1%
+		set newstate=%newstate%%state:~8,1%%state:~24,1%%state:~40,1%%state:~56,1%%state:~9,1%%state:~25,1%%state:~41,1%%state:~57,1%
+		set newstate=%newstate%%state:~10,1%%state:~26,1%%state:~42,1%%state:~58,1%%state:~11,1%%state:~27,1%%state:~43,1%%state:~59,1%
+		set newstate=%newstate%%state:~12,1%%state:~28,1%%state:~44,1%%state:~60,1%%state:~13,1%%state:~29,1%%state:~45,1%%state:~61,1%
+		set newstate=%newstate%%state:~14,1%%state:~30,1%%state:~46,1%%state:~62,1%%state:~15,1%%state:~31,1%%state:~47,1%%state:~63,1%
+		set state=%newstate%
+		set "newstate="
+	)
+	if %1==1 (
+		set newstate=%state:~0,1%%state:~4,1%%state:~8,1%%state:~12,1%%state:~16,1%%state:~20,1%%state:~24,1%%state:~28,1%
+		set newstate=%newstate%%state:~32,1%%state:~36,1%%state:~40,1%%state:~44,1%%state:~48,1%%state:~52,1%%state:~56,1%%state:~60,1%
+		set newstate=%newstate%%state:~1,1%%state:~5,1%%state:~9,1%%state:~13,1%%state:~17,1%%state:~21,1%%state:~25,1%%state:~29,1%
+		set newstate=%newstate%%state:~33,1%%state:~37,1%%state:~41,1%%state:~45,1%%state:~49,1%%state:~53,1%%state:~57,1%%state:~61,1%
+		set newstate=%newstate%%state:~2,1%%state:~6,1%%state:~10,1%%state:~14,1%%state:~18,1%%state:~22,1%%state:~26,1%%state:~30,1%
+		set newstate=%newstate%%state:~34,1%%state:~38,1%%state:~42,1%%state:~46,1%%state:~50,1%%state:~54,1%%state:~58,1%%state:~62,1%
+		set newstate=%newstate%%state:~3,1%%state:~7,1%%state:~11,1%%state:~15,1%%state:~19,1%%state:~23,1%%state:~27,1%%state:~31,1%
+		set newstate=%newstate%%state:~35,1%%state:~39,1%%state:~43,1%%state:~47,1%%state:~51,1%%state:~55,1%%state:~59,1%%state:~63,1%
+		set state=%newstate%
+		set "newstate="
+)
+goto :eof
+
+
+rem operates on a 64b binary string
+rem call :presentsbox [0/1]
+rem 0=enc/1=dec
+rem requires enabledelayedexpansion & the execution of the following assignments to function:
+rem ev's with an underscore preceding are for encryption
+rem ev's with the underscore after are for decrypting
+set _0000=1100
+set _0001=0101
+set _0010=0110
+set _0011=1011
+set _0100=1001
+set _0101=0000
+set _0110=1010
+set _0111=1101
+set _1000=0011
+set _1001=1110
+set _1010=1111
+set _1011=1000
+set _1100=0100
+set _1101=0111
+set _1110=0001
+set _1111=0010
+set 0000_=0101
+set 0001_=1110
+set 0010_=1111
+set 0011_=1000
+set 0100_=1100
+set 0101_=0001
+set 0110_=0010
+set 0111_=1101
+set 1000_=1011
+set 1001_=0100
+set 1010_=0110
+set 1011_=0011
+set 1100_=0000
+set 1101_=0111
+set 1110_=1001
+set 1111_=1010
+rem begining of sbox:
+:presentsbox
+	if %1==0 (
+		set newstate=!_%state:~0,4%!!_%state:~4,4%!!_%state:~8,4%!!_%state:~12,4%!!_%state:~16,4%!!_%state:~20,4%!!_%state:~24,4%!!_%state:~28,4%!
+		set newstate=%newstate%!_%state:~32,4%!!_%state:~36,4%!!_%state:~40,4%!!_%state:~44,4%!!_%state:~48,4%!!_%state:~52,4%!!_%state:~56,4%!!_%state:~60,4%!
+		set state=%newstate%
+		set "newstate="
+	)
+	if %1==1 (
+		set newstate=!%state:~0,4%_!!%state:~4,4%_!!%state:~8,4%_!!%state:~12,4%_!!%state:~16,4%_!!%state:~20,4%_!!%state:~24,4%_!!%state:~28,4%_!
+		set newstate=%newstate%!%state:~32,4%_!!%state:~36,4%_!!%state:~40,4%_!!%state:~44,4%_!!%state:~48,4%_!!%state:~52,4%_!!%state:~56,4%_!!%state:~60,4%_!
+		set state=%newstate%
+		set "newstate="
+	)
+goto :eof
+
+
+
+
+rem ChaCha20 quarter round funtion
+rem requires 4 32b strings called jar[a|b|c|d]
+:salsa20
+	
+goto :eof
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
