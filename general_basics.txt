@@ -208,20 +208,6 @@ rem 0=no output/1=output
 	if %1==1 set /a kout=%aout% ^^ %bout% ^^ %cout%
 goto :eof
 
-:triviumiv
-	set ivblk=%time::=%
-	set ivblk=%ivblk:.=%
-	set ivblk0=%random%%random%%random%
-	set ivblk=%ivblk%%ivblk0:~0,2%
-	rem ivblk now contains the numeric IV
-	set biniv=!_%ivblk:~0,1%_!!_%ivblk:~1,1%_!!_%ivblk:~2,1%_!!_%ivblk:~3,1%_!!_%ivblk:~4,1%_!!_%ivblk:~5,1%_!!_%ivblk:~6,1%_!!_%ivblk:~7,1%_!!_%ivblk:~8,1%_!!_%ivblk:~9,1%_!
-	set "ivblk0="
-	set biniv=%biniv:~78,3%%biniv:~0,77%
-	set areg=%biniv%0000000000000
-goto :eof
-
-
-
 rem call :presentpbox [0/1]
 rem 0=enc/1=dec
 rem operates on a 64b binary string
@@ -322,6 +308,14 @@ rem call :strlen0  StrVar  [RtnVar]
   set %~2=%len%
 goto :eof
 
+rem to xor two binary strings:
+rem for /l %%i in (0,1,[strlen-1]) do call :xorbits ![strA]:~%%i! ![strB]:~%%i,1!
+rem result will be stored in an ev called "xorres" so make sure to clear it before using
+rem xorbits again. otherwise new result will just be concatenated onto xorres.
+:xorbits
+	set /a nbit=%1 ^^ %2
+	set xorres=%xorres%%nbit%
+goto :eof
 
 
 
