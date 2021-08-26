@@ -115,6 +115,7 @@ set _01000011_=_
 set _01010011_=.
 
 :mainpart
+	set customiv=0
 	cls
 	echo.
 	echo Welcome to my Trivium OTP Generator.
@@ -125,7 +126,10 @@ set _01010011_=.
 	echo.
 	choice /c GRU
 if %errorlevel%==1 goto otpgen
-if %errorlevel%==2 goto otprecon
+if %errorlevel%==2 (
+	set customiv=1
+	goto otpgen
+)
 if %errorlevel%==3 goto useotp
 
 :otpgen
@@ -168,6 +172,7 @@ if %errorlevel%==3 goto useotp
 		pause
 		goto mainpart
 	)
+	if %customiv%==1 set /p ivblk=Please input 10-digit numerical IV: 
 	echo Setting up key ^& IV...
 	set kblk=0
 	:userkeydecomp
@@ -214,11 +219,13 @@ if %errorlevel%==3 goto useotp
 	set "kblk2="
 	set breg=%keystate%0000
 	rem the IV setup
-	set "keystate="
-	set ivblk=%time::=%
-	set ivblk=%ivblk:.=%%random%%random%%random%
-	set ivblk=%ivblk: =%
-	set ivblk=%ivblk:~0,10%
+	if %customiv%==0 (
+		set "keystate="
+		set ivblk=%time::=%
+		set ivblk=%ivblk:.=%%random%%random%%random%
+		set ivblk=%ivblk: =%
+		set ivblk=%ivblk:~0,10%
+	)
 	rem ivblk now contains the numeric IV
 	set biniv=!_%ivblk:~0,1%_!!_%ivblk:~1,1%_!!_%ivblk:~2,1%_!!_%ivblk:~3,1%_!!_%ivblk:~4,1%_!!_%ivblk:~5,1%_!!_%ivblk:~6,1%_!!_%ivblk:~7,1%_!!_%ivblk:~8,1%_!!_%ivblk:~9,1%_!
 	set areg=%biniv%0000000000000
@@ -247,10 +254,6 @@ if %errorlevel%==3 goto useotp
 	echo.
 	echo.
 	pause
-goto mainpart
-
-:otprecon
-	
 goto mainpart
 
 :useotp
