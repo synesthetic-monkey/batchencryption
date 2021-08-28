@@ -317,7 +317,21 @@ rem xorbits again. otherwise new result will just be concatenated onto xorres.
 	set xorres=%xorres%%nbit%
 goto :eof
 
-
+rem for /l %%i in (0,1,[operandLength-1]) do call :fulladder [0/1] ![OpA]:~%%i,1! ![OpB]:~%%i,1! [resultVarName]
+rem [0/1] ends or continues a calculation. cout & cin should always be set to 0 before calling for the first time.
+:fulladder
+	if %1==1 (
+		set "cin=0"
+		set "cout=0"
+		set %~4=%tempsum%
+		set "tempsum="
+		goto :eof
+	)
+	set cin=%cout%
+	set /a sum=(%2 ^^ %3) ^^ %cin%
+	set /a cout=((%2 ^^ %3) ^& %cin%) ^| (%2 ^& %3)
+	set tempsum=%tempsum%%sum%
+goto :eof
 
 
 
