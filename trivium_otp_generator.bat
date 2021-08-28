@@ -120,17 +120,15 @@ set _01010011_=.
 	echo.
 	echo Welcome to my Trivium OTP Generator.
 	echo.
-	echo Would you like to Generate a new OTP,
-	echo Reconstruct an old OTP, or Use an
-	echo existing OTP?
+	echo Would you like to Generate a new OTP
+	echo or Reconstruct an old OTP.
 	echo.
-	choice /c GRU
+	choice /c GR
 if %errorlevel%==1 goto otpgen
 if %errorlevel%==2 (
 	set customiv=1
 	goto otpgen
 )
-if %errorlevel%==3 goto useotp
 
 :otpgen
 	cls
@@ -172,7 +170,7 @@ if %errorlevel%==3 goto useotp
 		pause
 		goto mainpart
 	)
-	if %customiv%==1 set /p ivblk=Please input 10-digit numerical IV: 
+	if %customiv%==1 set /p custiv=Please input numerical IV: 
 	echo Setting up key ^& IV...
 	set kblk=0
 	:userkeydecomp
@@ -218,14 +216,13 @@ if %errorlevel%==3 goto useotp
 	set "kblk="
 	set "kblk2="
 	set breg=%keystate%0000
-	rem the IV setup
-	if %customiv%==0 (
-		set "keystate="
-		set ivblk=%time::=%
-		set ivblk=%ivblk:.=%%random%%random%%random%
-		set ivblk=%ivblk: =%
-		set ivblk=%ivblk:~0,10%
-	)
+	rem the IV setup 
+	set ivblk=%time::=%
+	set ivblk=%ivblk:.=%
+	set ivblk=%ivblk%%random%%random%%random%
+	set ivblk=%ivblk: =%
+	set ivblk=%ivblk:~0,10%
+	if %customiv%==1 set ivblk=%custiv%
 	rem ivblk now contains the numeric IV
 	set biniv=!_%ivblk:~0,1%_!!_%ivblk:~1,1%_!!_%ivblk:~2,1%_!!_%ivblk:~3,1%_!!_%ivblk:~4,1%_!!_%ivblk:~5,1%_!!_%ivblk:~6,1%_!!_%ivblk:~7,1%_!!_%ivblk:~8,1%_!!_%ivblk:~9,1%_!
 	set areg=%biniv%0000000000000
@@ -255,16 +252,6 @@ if %errorlevel%==3 goto useotp
 	echo.
 	pause
 goto mainpart
-
-:useotp
-	
-goto mainpart
-
-
-
-
-
-
 
 rem operates on a 93, 84, & 111-bit binary strings respectively.
 rem all regs starte at []reg0
