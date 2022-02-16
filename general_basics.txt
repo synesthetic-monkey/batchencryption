@@ -309,11 +309,11 @@ rem call :strlen0  StrVar  [RtnVar]
 goto :eof
 
 rem to xor two binary strings:
-rem for /l %%i in (0,1,[strlen-1]) do call :xorbits ![strA]:~%%i! ![strB]:~%%i,1!
+rem for /l %%i in (0,1,[strlen-1]) do call :xorbits ![strA]:~%%i,1! ![strB]:~%%i,1!
 rem result will be stored in an ev called "xorres" so make sure to clear it before using
 rem xorbits again. otherwise new result will just be concatenated onto xorres.
 :xorbits
-	set /a nbit=%1 ^^ %2
+	set /a nbit="%1 ^^ %2"
 	set xorres=%xorres%%nbit%
 goto :eof
 
@@ -333,11 +333,32 @@ rem [0/1] ends or continues a calculation. cout & cin should always be set to 0 
 	set tempsum=%tempsum%%sum%
 goto :eof
 
+rem to and two binary strings:
+rem for /l %%i in (0,1,[strlen-1]) do call :andbits ![strA]:~%%i! ![strB]:~%%i,1!
+rem result will be stored in an ev called "andres" so make sure to clear it before using
+rem andbits again. otherwise new result will just be concatenated onto andres.
+:andbits
+	set /a nbit="%1 ^& %2"
+	set andres=%andres%%nbit%
+goto :eof
 
+rem to or two binary strings:
+rem for /l %%i in (0,1,[strlen-1]) do call :orbits ![strA]:~%%i! ![strB]:~%%i,1!
+rem result will be stored in an ev called "orres" so make sure to clear it before using
+rem orbits again. otherwise new result will just be concatenated onto orres.
+:orbits
+	set /a nbit="%1 ^| %2"
+	set orres=%orres%%nbit%
+goto :eof
 
-
-
-
+rem to invert a binary string:
+rem for /l %%i in (0,1,[strlen-1]) do call :notbits ![strA]:~%%i!
+rem result will be stored in an ev called "notres" so make sure to clear it before using
+rem notbits again. otherwise new result will just be concatenated onto notres.
+:notbits
+	set /a nbit="^!%1"
+	set notres=%notres%%nbit%
+goto :eof
 
 
 
